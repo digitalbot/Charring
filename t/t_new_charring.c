@@ -22,7 +22,7 @@ void t_new_charring() {
 }
 
 void t_add_char() {
-    Charring *chrr = new_charring(5);
+    Charring *chrr = new_charring(3);
 
     add_char(chrr, "100");
     add_char(chrr, "200");

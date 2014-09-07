@@ -5,7 +5,7 @@
 
 #include "charring.h"
 
-Charring *new_charring(uint32_t capacity) {
+Charring *new_charring(int32_t capacity) {
     Charring *new = (Charring *)malloc(sizeof(Charring));
     if (new == NULL) {
         fprintf(stderr, "[ERROR] Can't allocate memmory\n");
@@ -14,9 +14,8 @@ Charring *new_charring(uint32_t capacity) {
 
     new->capacity = capacity;
     new->length   = 0;
-    new->cur  = 0;
     new->head = 0;
-    new->tail = 0;
+    new->tail = -1;
     new->ring = (void **)calloc(capacity, sizeof(void *));
     return new;
 }
@@ -33,19 +32,25 @@ int add_char(Charring *r, const char *c) {
     }
     strcpy(t, c);
 
-    r->tail = r->cur % r->capacity;
-    r->length++;
-    if (++r->cur > r->capacity) {
-        r->head = r->head > r->capacity - 1 ? 0 : ++r->head;
-        r->length = r->capacity;
+    if (r->length == r->capacity) {
+        r->head = ++r->head % r->capacity;
     }
-
+    r->tail = ++r->tail % r->capacity;
+    r->length = (r->length < r->capacity) ? r->length + 1 :r->capacity;
+    
+    if (r->ring[r->tail] != NULL) {
+        free(r->ring[r->tail]);
+    }
+    
+#ifdef DEBUG
+    printf("length: %d, head %d, tail: %d, data: %s\n", r->length, r->head, r->tail, t);
+#endif
+    
     r->ring[r->tail] = t;
-
     return r->tail;
 }
 
-char* get_char(Charring *r, uint32_t idx) {
+char* get_char(Charring *r, int32_t idx) {
     return idx < r->capacity ? (char *)r->ring[(r->head + idx) % r->capacity] : "[ERROR] over index";
 }
 
@@ -59,5 +64,6 @@ void del_charring(Charring *r) {
             free(r->ring[i]);
         }
     }
+    free(r->ring);
     free(r);
 }
