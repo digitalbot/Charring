@@ -3,7 +3,7 @@ CFLAGS			= -O4 -I/usr/local/include -Wall
 DEST			= /usr/local/bin
 LDFLAGS			= -L/usr/local/lib
 
-TARGETS			= t_new_charring
+TARGETS			= t_new_charring bobobo
 
 all:				$(TARGETS)
 .SUFFIXES:	 		.c .o
@@ -11,6 +11,8 @@ all:				$(TARGETS)
 t_new_charring:		t_new_charring.o charring.o
 					$(CC) -o $@ $^
 
+bobobo:			bobobo.o charring.o
+					$(CC) -o $@ $^
 
 .c.o:
 					$(CC) $(CFLAGS) -c $<
