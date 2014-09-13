@@ -46,6 +46,7 @@ int add_char(Charring *r, const char *c) {
     r->length = (r->length < r->capacity) ? r->length + 1 : r->capacity;
     
     if (r->ring[r->tail] != NULL) {
+        free(r->ring[r->tail]->s);
         free(r->ring[r->tail]);
     }
     
@@ -58,6 +59,10 @@ int add_char(Charring *r, const char *c) {
 }
 
 char* get_char(Charring *r, int32_t idx) {
+    if (r == NULL) {
+        fprintf(stderr, "[ERROR] not allocated\n");
+        return NULL;
+    }
     if (r->tail == -1) {
         return "[ERROR] no entry";
     }
@@ -96,7 +101,7 @@ char *join_char(Charring *r) {
         total += r->ring[i]->size - 1;
     }
     
-    char *string = (char *)malloc(total);
+    char *string = (char *)calloc(1, total);
     if (string == NULL) {
         fprintf(stderr, "[ERROR] Can't allocate memmory\n");
         return NULL;
@@ -106,10 +111,7 @@ char *join_char(Charring *r) {
         strcat(string, get_char(r, i));
     }
     
-    /* return string; */
-    /* printf("%s\n", string); */
-    /* free(string); */
-    return "ok";
+    return string;
 }
 
 // TODO: too expensive
@@ -118,6 +120,5 @@ void del_joined_char(char *s) {
         fprintf(stderr, "[ERROR] not allocated\n");
         return;
     }
-    printf("hoge\n");
     free(s);
 }
