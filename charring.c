@@ -36,7 +36,7 @@ int add_char(Charring *r, const char *c) {
         r->head = ++r->head % r->capacity;
     }
     r->tail = ++r->tail % r->capacity;
-    r->length = (r->length < r->capacity) ? r->length + 1 :r->capacity;
+    r->length = (r->length < r->capacity) ? r->length + 1 : r->capacity;
     
     if (r->ring[r->tail] != NULL) {
         free(r->ring[r->tail]);
@@ -51,7 +51,16 @@ int add_char(Charring *r, const char *c) {
 }
 
 char* get_char(Charring *r, int32_t idx) {
-    return idx < r->capacity ? (char *)r->ring[(r->head + idx) % r->capacity] : "[ERROR] over index";
+    if (r->tail == -1) {
+        return "[ERROR] no entry";
+    }
+    if (idx < 0) {
+        return "[ERROR] index must be unsigned value";
+    }
+    if (idx >= r->length) {
+        return "[ERROR] over index";
+    }
+    return r->ring[(r->head + idx) % r->capacity];
 }
 
 void del_charring(Charring *r) {

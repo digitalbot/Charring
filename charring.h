@@ -1,6 +1,6 @@
 #ifndef CHARRING_H
 #define CHARRING_H
-#define DEBUG 1
+
 #include <stdint.h>
 
 struct Charring {
