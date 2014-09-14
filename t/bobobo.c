@@ -8,7 +8,6 @@
 
 char *gen();
 
-//ボボボーボ・ボーボボ 10
 int main(int argc, char *argv[]) {
     srand(time(NULL));
     Charring *chrr = new_charring(10);

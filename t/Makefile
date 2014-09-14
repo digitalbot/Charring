@@ -6,9 +6,9 @@ LDFLAGS			= -L/usr/local/lib
 TARGETS			= t_new_charring bobobo
 
 all:				$(TARGETS)
-.SUFFIXES:	 		.c .o
+.SUFFIXES: 		.c .o
 
-t_new_charring:		t_new_charring.o charring.o
+t_new_charring:	t_new_charring.o charring.o
 					$(CC) -o $@ $^
 
 bobobo:			bobobo.o charring.o
@@ -20,10 +20,12 @@ bobobo:			bobobo.o charring.o
 charring.o:			../charring.c
 					$(CC) $(CFLAGS) -c $<
 
-.PHONY:				test
+.PHONY:			test
+
 test:
 					make all && for f in $(TARGETS); do ./$$f; done;
 
-.PHONY:				clean
+.PHONY:			clean
+
 clean:
 					$(RM) *.o *- $(TARGETS)
