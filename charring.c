@@ -30,6 +30,11 @@ int add_char(Charring *r, const char *c) {
         fprintf(stderr, "[ERROR] not allocated\n");
         return EXIT_FAILURE;
     }
+    if (c == NULL) {
+        fprintf(stderr, "[ERROR] Can't add NULL character\n");
+        return EXIT_FAILURE;
+    }
+    
     SizedString *ss = (SizedString *)malloc(sizeof(SizedString));
     if (ss == NULL) {
         fprintf(stderr, "[ERROR] Can't allocate memmory\n");
