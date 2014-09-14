@@ -74,13 +74,13 @@ You do not have to care buffer size. You may only `add`.
 int capacity = 10;
 Charring *chrr = new_charring(capacity);
 add_char(chrr, "This");
-add_char(chrr, "is");
-add_char(chrr, "a");
-add_char(chrr, "pen.");
+add_char(chrr, "Is");
+add_char(chrr, "A");
+add_char(chrr, "Pen.");
 
 char *joined = join_char(chrr);
 printf("%s\n", joined);
-// => This is a pen.
+// => ThisIsAPen.
 
 del_joined_char(chrr);
 del_charring(chrr);
