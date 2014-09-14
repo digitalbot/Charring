@@ -5,6 +5,11 @@
 
 #include "charring.h"
 
+// private ---
+int validate_get_char(Charring*, int32_t);
+// -----------   
+
+
 Charring *new_charring(int32_t capacity) {
     Charring *new = (Charring *)malloc(sizeof(Charring));
     if (new == NULL) {
@@ -58,21 +63,38 @@ int add_char(Charring *r, const char *c) {
     return r->tail;
 }
 
+size_t get_charsize(Charring *r, int32_t idx) {
+    if (validate_get_char(r, idx) == EXIT_FAILURE) {
+        return EXIT_FAILURE;
+    }
+    return r->ring[(r->head + idx) % r->capacity]->size;
+}
+
 char* get_char(Charring *r, int32_t idx) {
-    if (r == NULL) {
-        fprintf(stderr, "[ERROR] not allocated\n");
+    if (validate_get_char(r, idx) == EXIT_FAILURE) {
         return NULL;
     }
+    return r->ring[(r->head + idx) % r->capacity]->s;
+}
+
+int validate_get_char(Charring *r, int32_t idx) {
+    if (r == NULL) {
+        fprintf(stderr, "[ERROR] not allocated\n");
+        return EXIT_FAILURE;
+    }
     if (r->tail == -1) {
-        return "[ERROR] no entry";
+        fprintf(stderr, "[ERROR] no entry\n");
+        return EXIT_FAILURE;
     }
     if (idx < 0) {
-        return "[ERROR] index must be unsigned value";
+        fprintf(stderr, "[ERROR] index must be unsigned value");
+        return EXIT_FAILURE;
     }
     if (idx >= r->length) {
-        return "[ERROR] over index";
+        fprintf(stderr, "[ERROR] over index");
+        return EXIT_FAILURE;
     }
-    return r->ring[(r->head + idx) % r->capacity]->s;
+    return EXIT_SUCCESS;
 }
 
 void del_charring(Charring *r) {

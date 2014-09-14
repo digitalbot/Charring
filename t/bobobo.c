@@ -20,14 +20,15 @@ int main(int argc, char *argv[]) {
         char *joined = join_char(chrr);
         
         if (! strcmp(joined, "ボボボーボ・ボーボボ")) {
-            printf("\n\n\n--------------------\n");
-            printf("%s\n", joined);
+            // printf("\n\n\n--------------------\n");
+            // printf("%s\n", joined);
             del_joined_char(joined);
             break;
         }
             
         del_joined_char(joined);
     }
+    printf("\n");
     return 0;
 }
 
