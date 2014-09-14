@@ -6,7 +6,7 @@
 #include "charring.h"
 
 // private ---
-int validate_get_char(Charring*, int32_t);
+int validate_get_char_(Charring*, int32_t);
 // -----------   
 
 
@@ -64,20 +64,20 @@ int add_char(Charring *r, const char *c) {
 }
 
 size_t get_charsize(Charring *r, int32_t idx) {
-    if (validate_get_char(r, idx) == EXIT_FAILURE) {
+    if (validate_get_char_(r, idx) == EXIT_FAILURE) {
         return EXIT_FAILURE;
     }
     return r->ring[(r->head + idx) % r->capacity]->size;
 }
 
 char* get_char(Charring *r, int32_t idx) {
-    if (validate_get_char(r, idx) == EXIT_FAILURE) {
+    if (validate_get_char_(r, idx) == EXIT_FAILURE) {
         return NULL;
     }
     return r->ring[(r->head + idx) % r->capacity]->s;
 }
 
-int validate_get_char(Charring *r, int32_t idx) {
+int validate_get_char_(Charring *r, int32_t idx) {
     if (r == NULL) {
         fprintf(stderr, "[ERROR] not allocated\n");
         return EXIT_FAILURE;
@@ -112,18 +112,19 @@ void del_charring(Charring *r) {
     free(r);
 }
 
+// TODO: too expensive
 char *join_char(Charring *r) {
     if (r ==NULL) {
         fprintf(stderr, "[ERROR] not allocated\n");
         return NULL;
     }
 
-    size_t total = 1;
+    size_t total = 1;   // this '1' is tail of string '\0' size;
     for (int i = 0; i < r->length; i++) {
         total += r->ring[i]->size - 1;
     }
     
-    char *string = (char *)calloc(1, total);
+    char *string = (char *)calloc(1, total);   // do not malloc
     if (string == NULL) {
         fprintf(stderr, "[ERROR] Can't allocate memmory\n");
         return NULL;
@@ -136,7 +137,7 @@ char *join_char(Charring *r) {
     return string;
 }
 
-// TODO: too expensive
+// TODO: i do not wanna free by hand power.
 void del_joined_char(char *s) {
     if (s == NULL) {
         fprintf(stderr, "[ERROR] not allocated\n");
