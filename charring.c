@@ -95,7 +95,7 @@ int add_char(Charring *r, const char *c) {
 
 size_t get_charsize(Charring *r, int32_t idx) {
     char *res = validate_get_char_(r, idx);
-    if (! strcmp(res, "ok")) {
+    if (strcmp(res, "ok")) {
         return EXIT_FAILURE;
     }
     return r->ring[(r->head + idx) % r->capacity]->size;
@@ -152,7 +152,7 @@ char *join_char(Charring *r) {
         total += r->ring[i]->size - 1;
     }
     
-    char *string = (char *)calloc(1, total);   // do not malloc
+    char *string = (char *)calloc(1, total);   // do not use malloc
     if (string == NULL) {
         fprintf(stderr, "[ERROR] Can't allocate memmory\n");
         return NULL;
